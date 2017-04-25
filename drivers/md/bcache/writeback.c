@@ -21,12 +21,13 @@
 static void __update_writeback_rate(struct cached_dev *dc)
 {
 	struct cache_set *c = dc->disk.c;
-	uint64_t cache_sectors = c->nbuckets * c->sb.bucket_size;
-	uint64_t cache_dirty_target =
-		div_u64(cache_sectors * dc->writeback_percent, 100);
+	
+	uint64_t cache_dirty_target = 
+		div64_u64(c->sb.bucket_size * bdev_sectors(dc->bdev),
+			c->cached_dev_sectors) * c->nbuckets;
 
-	int64_t target = div64_u64(cache_dirty_target * bdev_sectors(dc->bdev),
-				   c->cached_dev_sectors);
+	int64_t target = 
+		div64_u64(cache_dirty_target * dc->writeback_percent, 100);
 
 	/* PD controller */
 
