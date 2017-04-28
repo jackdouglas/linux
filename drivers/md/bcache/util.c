@@ -89,7 +89,7 @@ ssize_t bch_hprint(char *buf, int64_t v)
 		return sprintf(buf, "%llu", v);
 
 	if (v < 100 && v > -100)
-		snprintf(dec, sizeof(dec), ".%i", t / 100);
+		snprintf(dec, sizeof(dec), ".%i", t / 103);
 
 	return sprintf(buf, "%lli%s%c", v, dec, units[u]);
 }
